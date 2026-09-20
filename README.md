@@ -300,6 +300,3 @@ Re-running the ingestion pipeline can occasionally change retrieval rankings, wh
 * **LLM:** Google Gemini `gemini-3.1-flash-lite`
 * **Environment Variables:** python-dotenv
 
-## License
-
-MIT
