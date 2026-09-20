@@ -71,9 +71,7 @@ agent-as-a-judge/
 
 ### 1. PDF Loading
 
-The paper is loaded page-by-page using **PyMuPDF** when available.
-
-`PyPDFLoader` is used as a fallback.
+The paper is loaded page-by-page using **PyMuPDF**.
 
 Page metadata is preserved so that retrieved chunks can be traced back to their original page.
 
