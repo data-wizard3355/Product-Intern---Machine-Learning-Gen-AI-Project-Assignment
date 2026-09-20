@@ -1,0 +1,13 @@
+# secrets
+.env
+
+# python
+venv/
+__pycache__/
+*.pyc
+
+# generated artifacts (regenerable from source PDF)
+vectorstore/
+
+# OS
+.DS_Store
