@@ -11,20 +11,13 @@ import argparse
 import os
 import re
 
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 
 
-try:
-    from langchain_community.document_loaders import PyMuPDFLoader
-    _HAS_PYMUPDF = True
-except ImportError:
-    _HAS_PYMUPDF = False
-
-
-def load_pdf(pdf_path: str, use_pymupdf: bool = True):
+def load_pdf(pdf_path: str):
     """Loads the PDF page-by-page, preserving page number metadata.
     Page numbers matter later: they let the chatbot cite exactly where
     an answer came from, which is what the submission form is asking for.
@@ -34,10 +27,7 @@ def load_pdf(pdf_path: str, use_pymupdf: bool = True):
     clouds, charts with axis labels) where pypdf tends to interleave
     label fragments with body text and garble the result.
     """
-    if use_pymupdf and _HAS_PYMUPDF:
-        loader = PyMuPDFLoader(pdf_path)
-    else:
-        loader = PyPDFLoader(pdf_path)
+    loader = PyMuPDFLoader(pdf_path)
     pages = loader.load()
     return pages
 
@@ -55,7 +45,7 @@ def _alpha_ratio(text: str) -> float:
 def _looks_like_noise(text: str) -> bool:
     """Heuristic filter for chunks that are more likely to be extraction
     noise than usable content, e.g. from figure/chart regions where
-    pypdf/pymupdf pull out scattered labels rather than sentences.
+    PyMuPDF pulls out scattered labels rather than sentences.
 
     Not used to DROP chunks (that risks losing real content) — only to
     tag them, so noisy chunks don't silently outrank clean prose during
@@ -134,17 +124,11 @@ def main():
     parser.add_argument("--out", default="vectorstore")
     parser.add_argument("--chunk-size", type=int, default=1000)
     parser.add_argument("--chunk-overlap", type=int, default=400)
-    parser.add_argument(
-        "--no-pymupdf",
-        action="store_true",
-        help="Force the original PyPDFLoader instead of PyMuPDF.",
-    )
     args = parser.parse_args()
 
     print(f"[1/4] Loading PDF: {args.pdf}")
-    pages = load_pdf(args.pdf, use_pymupdf=not args.no_pymupdf)
-    loader_used = "PyMuPDF" if (_HAS_PYMUPDF and not args.no_pymupdf) else "PyPDFLoader"
-    print(f"      -> {len(pages)} pages loaded (using {loader_used})")
+    pages = load_pdf(args.pdf)
+    print(f"      -> {len(pages)} pages loaded (using PyMuPDF)")
 
     print(f"[2/4] Cleaning page text")
     pages = clean_pages(pages)
