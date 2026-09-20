@@ -19,24 +19,24 @@ HuggingFace Embeddings
  ↓
 FAISS Vector Store
  ↓
-        ┌───────────────┐
-        │  User Query   │
-        └───────┬───────┘
-                ↓
-       ┌──────────────────┐
-       │ Hybrid Retrieval │
-       │                  │
-       │ FAISS + BM25     │
-       └────────┬─────────┘
-                ↓
-       FlashRank Reranking
-                ↓
-         Prompt Assembly
-                ↓
-       Google Gemini
-      gemini-3.1-flash-lite
-                ↓
-      Answer + Sources
+┌───────────────┐
+│  User Query   │
+└───────┬───────┘
+        ↓
+┌──────────────────┐
+│ Hybrid Retrieval │
+│                  │
+│ FAISS + BM25     │
+└────────┬─────────┘
+         ↓
+FlashRank Reranking
+         ↓
+   Prompt Assembly
+         ↓
+    Google Gemini
+  gemini-3.1-flash-lite
+         ↓
+  Answer + Sources
 ```
 
 A visual diagram of the pipeline is included in:
