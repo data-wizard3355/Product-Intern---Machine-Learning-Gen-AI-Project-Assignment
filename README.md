@@ -7,18 +7,18 @@ The project was built for the **Product Intern – Machine Learning & Gen-AI pro
 ## Architecture
 
 ```text
-PDF
- ↓
+  PDF
+   ↓
 PDF Loading
- ↓
+   ↓
 Text Cleaning
- ↓
+   ↓
 Recursive Chunking
- ↓
+   ↓
 HuggingFace Embeddings
- ↓
+   ↓
 FAISS Vector Store
- ↓
+   ↓
 ┌───────────────┐
 │  User Query   │
 └───────┬───────┘
